@@ -60,11 +60,11 @@ app.get('/token/:username', async (req, res) => {
 })
 
 
-app.post('/', (req, res) =>{
+app.get('/', (req, res) =>{
     res.send("Pong");
 })
 
-app.post('/ask/:token/:class_id/:body', async (req, res) =>{
+app.get('/ask/:token/:class_id/:body', async (req, res) =>{
     let token = req.params.token;
     let class_id = req.params.class_id;
     let body = req.params.body;
@@ -86,7 +86,7 @@ app.post('/ask/:token/:class_id/:body', async (req, res) =>{
     
 })
 
-app.post('/answer/:token/:question_id/:body', async (req, res) =>{
+app.get('/answer/:token/:question_id/:body', async (req, res) =>{
     let token = req.params.token;
     let question_id = req.params.question_id;
     let body = req.params.body;
