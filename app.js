@@ -114,6 +114,7 @@ app.get('/put_class/:class_id', async (req,res) => {
     await db.collection("classes").doc(class_id).set({
         question_ids : []
     })
+    req.status(201).end();
 }
 
 
