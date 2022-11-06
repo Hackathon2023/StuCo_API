@@ -2,7 +2,7 @@ FROM node:16
 
 WORKDIR /app
 
-RUN npm install --production
+RUN npm install
 
 ADD . /app
 
