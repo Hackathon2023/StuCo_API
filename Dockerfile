@@ -9,6 +9,6 @@ USER node
 
 RUN npm install
 
-COPY --chowan=node:node . .
+COPY . .
 EXPOSE 8080
 CMD ["node", "app.js"]
