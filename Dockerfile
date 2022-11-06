@@ -1,12 +1,14 @@
 FROM node:16
 
+RUN mkdir -p /app/node_modules && chown -R node:node /app
 WORKDIR /app
 
 COPY package*.json ./
-COPY package-lock*.json ./
 
-RUN npm ci --only=production
+USER node
 
-COPY . .
+RUN npm install
+
+COPY --chowan=node:node . .
 EXPOSE 8080
 CMD ["node", "app.js"]
