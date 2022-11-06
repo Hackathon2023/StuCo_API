@@ -1,13 +1,10 @@
 FROM node:16
 
-RUN mkdir -p /app/node_modules && chown -R node:node /app
 WORKDIR /app
 
 COPY package*.json ./
 
-USER node
-
-RUN npm install
+RUN rm -rf node_modules && rm -rf package-lock.json && npm 
 
 COPY . .
 EXPOSE 8080
