@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm clear cache && rm -rf node_modules && rm -rf package-lock.json && npm i
+RUN npm i
 
 COPY . .
 EXPOSE 8080
