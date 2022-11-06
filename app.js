@@ -28,7 +28,7 @@ app.get('/class/:deptnum', async (req, res) => {
 
 app.get('/question/:id', async (req, res) => {
     let id = req.params.id;
-    let question = await db.collection('question_ids').doc(id).get();
+    let question = await db.collection('questions').doc(id).get();
     if(!question.exists){
         res.status(404).send("Question not found").end();
     }
