@@ -115,7 +115,7 @@ app.get('/put_class/:class_id', async (req,res) => {
         question_ids : []
     })
     req.status(201).end();
-}
+})
 
 
 const port = process.env.PORT || 8080;
