@@ -23,12 +23,12 @@ app.get('/class/:deptnum', async (req, res) => {
     if(!class_id.exists){
         res.status(404).send("Class not found");
     }
-    res.send({questions: class_id.data().questions}).status(200).end();;
+    res.send({question_ids: class_id.data().question_ids}).status(200).end();;
 })
 
 app.get('/question/:id', async (req, res) => {
     let id = req.params.id;
-    let question = await db.collection('questions').doc(id).get();
+    let question = await db.collection('question_ids').doc(id).get();
     if(!question.exists){
         res.status(404).send("Question not found").end();
     }
@@ -36,7 +36,7 @@ app.get('/question/:id', async (req, res) => {
         body: question.data().body,
         upvote: question.data().upvote,
         downvote: question.data().downvote,
-        answers: question.data().answers
+        answer_ids: question.data().answer_ids
     }).status(200).end();
 
 })
@@ -77,10 +77,10 @@ app.post('/ask/:token/:class_id/:body', async (req, res) =>{
         body: body,
         upvote: 0,
         downvote: 0,
-        answers: []
+        answer_ids: []
     });
     await db.collection('classes').doc(class_id).update({
-        questions: db.FieldValue.arrayUnion(question_id)
+        question_ids: db.FieldValue.arrayUnion(question_id)
     });
     req.status(201).end();
     
@@ -100,8 +100,8 @@ app.post('/answer/:token/:question_id/:body', async (req, res) =>{
         upvote: 0,
         downvote: 0
     });
-    await db.collection('questions').doc(question_id).update({
-        answers: db.FieldValue.arrayUnion(answer_id)
+    await db.collection('answer_ids').doc(question_id).update({
+        answer_ids: db.FieldValue.arrayUnion(answer_id)
     });
     req.status(201).end();
 })
