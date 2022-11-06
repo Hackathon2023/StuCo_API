@@ -44,13 +44,13 @@ app.get('/question/:id', async (req, res) => {
 app.get('/answer/:id', async (req, res) => {
     let id = req.params.id;
     let answer = await db.collection('answers').doc(id).get();
-    if(!question.exists){
+    if(!answer.exists){
         res.status(404).send("Answer not found").end();
     }
     res.send({
-        body: question.data().body,
-        upvote: question.data().upvote,
-        downvote: question.data().downvote
+        body: answer.data().body,
+        upvote: answer.data().upvote,
+        downvote: answer.data().downvote
     }).status(200).end();
 })
 
@@ -71,18 +71,19 @@ app.get('/ask/:token/:class_id/:body', async (req, res) =>{
 
     if(!db.collection('classes').doc(class_id).get().exists){
         res.status(404).send("Class not found").end();
+    }else{
+        await db.collection('questions').add({
+            creator: token,
+            body: body,
+            upvote: 0,
+            downvote: 0,
+            answer_ids: []
+        });
+        await db.collection('classes').doc(class_id).update({
+            question_ids: db.FieldValue.arrayUnion(question_id)
+        });
+        req.status(201).end();
     }
-    await db.collection('questions').add({
-        creator: token,
-        body: body,
-        upvote: 0,
-        downvote: 0,
-        answer_ids: []
-    });
-    await db.collection('classes').doc(class_id).update({
-        question_ids: db.FieldValue.arrayUnion(question_id)
-    });
-    req.status(201).end();
     
 })
 
@@ -93,17 +94,19 @@ app.get('/answer/:token/:question_id/:body', async (req, res) =>{
 
     if(!db.collection('questions').doc(question_id).get().exists){
         res.status(404).send("Question not found").end();
+    }else{
+        await db.collection('answers').add({
+            creator: token,
+            body: body,
+            upvote: 0,
+            downvote: 0
+        });
+        await db.collection('answer_ids').doc(question_id).update({
+            answer_ids: db.FieldValue.arrayUnion(answer_id)
+        });
+        req.status(201).end();
     }
-    await db.collection('answers').add({
-        creator: token,
-        body: body,
-        upvote: 0,
-        downvote: 0
-    });
-    await db.collection('answer_ids').doc(question_id).update({
-        answer_ids: db.FieldValue.arrayUnion(answer_id)
-    });
-    req.status(201).end();
+
 })
 
 
