@@ -69,7 +69,7 @@ app.get('/ask/:token/:class_id/:body', async (req, res) =>{
     let class_id = req.params.class_id;
     let body = req.params.body;
 
-    if(!db.collection('classes').doc(class_id).get().exists){
+    if(! await db.collection('classes').doc(class_id).get().exists){
         res.status(404).send("Class not found").end();
     }else{
         await db.collection('questions').add({
@@ -92,7 +92,7 @@ app.get('/answer/:token/:question_id/:body', async (req, res) =>{
     let question_id = req.params.question_id;
     let body = req.params.body;
 
-    if(!db.collection('questions').doc(question_id).get().exists){
+    if(! await db.collection('questions').doc(question_id).get().exists){
         res.status(404).send("Question not found").end();
     }else{
         await db.collection('answers').add({
@@ -108,6 +108,13 @@ app.get('/answer/:token/:question_id/:body', async (req, res) =>{
     }
 
 })
+
+app.get('/put_class/:class_id', async (req,res) => {
+    let class_id = req.params.class_id;
+    await db.collection("classes").doc(class_id).set({
+        question_ids : []
+    })
+}
 
 
 const port = process.env.PORT || 8080;
