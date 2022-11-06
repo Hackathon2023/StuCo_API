@@ -1,7 +1,7 @@
 FROM node:16
 
-WORKDIR /
-
+WORKDIR /app
+COPY package.json .
 RUN npm install
-
+ADD . /app
 CMD node app.js
