@@ -68,8 +68,8 @@ app.get('/ask/:token/:class_id/:body', async (req, res) =>{
     let token = req.params.token;
     let class_id = req.params.class_id;
     let body = req.params.body;
-
-    if(! await db.collection('classes').doc(class_id).get().exists){
+    let the_class = await db.collection('classes').doc(class_id).get();
+    if(!the_class.exists){
         res.status(404).send("Class not found").end();
     }else{
         await db.collection('questions').add({
@@ -91,8 +91,8 @@ app.get('/answer/:token/:question_id/:body', async (req, res) =>{
     let token = req.params.token;
     let question_id = req.params.question_id;
     let body = req.params.body;
-
-    if(! await db.collection('questions').doc(question_id).get().exists){
+    let the_question = await db.collection('questions').doc(question_id).get()
+    if(! the_question.exists){
         res.status(404).send("Question not found").end();
     }else{
         await db.collection('answers').add({
