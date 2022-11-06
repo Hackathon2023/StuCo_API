@@ -1,9 +1,7 @@
 FROM node:16
 
-WORKDIR /app
+WORKDIR /
 
 RUN npm install
-
-ADD . /app
 
 CMD node app.js
